@@ -21,6 +21,7 @@ python3 simpleRun.py
 
 # How to plot ltSpice bode diagrams in Latex
  * export to .txt 
+ * add file to project 
 
  ```
 %\pgfplotstableread[col sep=space]{IndividualFilters.txt}{\tableabcdef}
