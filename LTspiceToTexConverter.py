@@ -16,10 +16,19 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 	global count_bauelemente
 	global BauteileAddSpeicher
 	
-	saveFile = filenameLTspice[0:-len(filenameLTspice.split('.')[-1])] + r'tex'
+	if saveFile == '':
+		saveFile = filenameLTspice[0:-len(filenameLTspice.split('.')[-1])] + r'tex'
+
+	#check if last char of path is / or \ depending on the operating system
+	if os.name == 'nt':
+		if not lt_spice_directory[-1] == '\\':
+			lt_spice_directory = lt_spice_directory + '\\'
+	else:
+		if not lt_spice_directory[-1] == '/':
+			lt_spice_directory = lt_spice_directory + '/'
+
 	
-	if not lt_spice_directory[-1] == '\\':
-		lt_spice_directory = lt_spice_directory + '\\'
+
 
 		
 	def print2(zuPrint):
@@ -35,6 +44,17 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 		if list_or_none: return list_or_none[0]
 			
 	def findPinsInLib(name):
+		print("lt_spice_directory: " , lt_spice_directory)
+		
+		#adjust string acording to the operating system !!! this is just a workaround
+		if os.name == 'nt':
+			#no action
+			print("")
+		else:
+			name = name.replace("\\","/")
+		
+		print("name: " , name)
+
 		with open(lt_spice_directory + name + ".asy", "r") as f:
 			sym = f.readlines()
 		
@@ -222,10 +242,22 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 	def convertNeuName(name):
 		ones = ["", "one","two","three","four", "five", "six","seven","eight","nine","ten"]
 		result = ''.join(ones[int(i)] if i.isdigit() else str(i) for i in name)
+		print("\n============")
+		print("result: ", result)
 		result = result.replace("-", "")
-		return result.replace("\\", "")
+		result = result.replace("\\", "")
+		result = result.replace("/", "")
+		print("result: ", result)
+		return 
 							  
 	def CreateDevFromLib(name, scale = 1/64):
+		#adjust string acording to the operating system !!! this is just a workaround
+		if os.name == 'nt':
+			#no action
+			print("")
+		else:
+			name = name.replace("\\","/")
+
 		with open(lt_spice_directory + name + ".asy", "r") as f:
 			sym = f.readlines()
 			
@@ -256,7 +288,7 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 				
 		offset = pin[0] if pin else [0, 0]
 		
-		newLib = '\\def\\' + convertNeuName(str(name)) + r'(#1)#2#3{%' + '\n' +  r'  \begin{scope}[#1,transform canvas={scale=1}]' + '\n'
+		newLib = '\\def\\' + str(convertNeuName(str(name))) + r'(#1)#2#3{%' + '\n' +  r'  \begin{scope}[#1,transform canvas={scale=1}]' + '\n'
 		
 		for t in line:
 			newLib = newLib + r'  \draw ' + printXY(t[0:],offset) + ' -- ' + printXY(t[2:],offset) + ';' + '\n'
@@ -298,7 +330,7 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 		return newLib
 
 
-	with open(filenameLTspice, "r") as f:
+	with open(filenameLTspice, "r", encoding='utf-16-le') as f:
 		data = f.readlines()
 
 	words = []
