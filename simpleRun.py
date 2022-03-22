@@ -4,9 +4,6 @@ import codecs
 
 from LTspiceToTexConverter import *
 
-print("ONLY WORKS VIA POWERSHELL !!!!!!")
-
-
 if os.name == 'nt':
     print("OS: is Windows")
     path_ltspice = r'C:\Program Files\LTC\LTspiceXVII\lib\sym'
