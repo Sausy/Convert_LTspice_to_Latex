@@ -87,6 +87,8 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 		
 		DrahtListe.append([Knoten1,Knoten2])
 
+		print("\nDrahtListe: ", DrahtListe)
+
 	def gndTxtADD(befehl):
 		x1 = (int(befehl[1]) , -int(befehl[2]))
 		anzahlBauteil = len(Bauteilliste)
@@ -102,6 +104,7 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 		
 		
 		x = np.array([int(befehl[2]) , -int(befehl[3])])
+		print("x: ", x)
 		pin = findPinsInLib(befehl[1])
 		anzahlBauteil = len(Bauteilliste)
 		
@@ -127,9 +130,10 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 		for i in range(idx+1,idx+4):
 			if words[i][0]== 'SYMATTR':
 				bauteilbezeichnung = words[i][2]
+				
 				if bauteilbezeichnung.count('_')>0 and bauteilbezeichnung.count('$')<2:
 					bauteilbezeichnung = r'$'+bauteilbezeichnung+r'$'
-				break;
+				break
 		
 		global count_bauelemente
 		global BauteileAddSpeicher
@@ -142,7 +146,7 @@ def LtSpiceToLatex(saveFile = '', filenameLTspice = 'Draft.asc', lt_spice_direct
 			knotenbez = []
 			for ind,t in enumerate(pin):
 				knotenbez.append('B'+str(count_bauelemente)+ ' X' + str(ind))
-				
+			
 			count_bauelemente = count_bauelemente +1;
 			befehl[1] = befehl[1] + ' ' + (befehl[4]+'  ')[0:4]
 			for t,  name in enumerate(knotenbez):

@@ -4,19 +4,17 @@ BASED ON THE WORK OF
 # Convert_LTspice_to_Latex
 Convert LTspice to Latex (TikZ)
 
-it works in linux and windows enviroments 
+please run 
 
-please eddit the paths acording to needs in the simpleRun.py script
+```
+python .\parse_ascFile.py ..\Simulation\SpiceSimulation\Draft24.asc ..\converter\Draft24.txt
+```
 
 ## Setup
 1. Install Python 3
 2. Install LTspice
 3. Latex packages: tikz, circuitikz, (amsmath)
  
-## run it 
-```
-python3 simpleRun.py
-```
 
 
 # How to plot ltSpice bode diagrams in Latex
